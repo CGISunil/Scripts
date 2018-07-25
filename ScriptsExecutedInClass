@@ -1,0 +1,84 @@
+The Pipeline – Building Blocks
+
+Automated Software Pipeline
+
+End-To-End Orchestration – Jenkins
+ 
+Solution Steps
+ 
+
+ 
+Install Jenkins
+	SSH to Ubuntu machine and become a root user:
+sudo su -
+	Download the scripts
+wget https://github.com/kdandapani/Scripts/blob/master/jenkinsubuntu.sh
+	See what is inside
+cat jenkinsubuntu.sh
+	Run the script
+bash jenkinsubuntu.sh
+	You should see “Success log message to access Jenkins at: http://IPAddress:8080”
+	Access Jenkins Home page in the browser
+http://IP Address:8080
+	Password is found in 
+cat /var/Jenkins_home/secrets/initialAdminPassword
+
+Install Docker
+	SSH to Ubuntu machine and become a root user:
+sudo su -
+	Download the scripts
+wget https://github.com/kdandapani/Scripts/blob/master/dockerubuntu.sh 
+	See what is inside:
+cat dockerubuntu.sh
+	Run the script
+bash dockerubuntu.sh
+	Check the status of the docker
+sudo systemctl status docker
+	Modify the user group
+sudo usermod –a –G docker Jenkins
+
+Develop The Web Application
+	Change the DB IP address in the below files
+/WebApp/blob/master/src/test/java/servlet/cancelpage.java (line 20)
+/WebApp/blob/master/src/test/java/servlet/createpage.java (line 20)
+/WebApp/blob/master/src/test/java/servlet/viewticket.java (line 19)
+	Change the QA environment IP address in the below file
+/WebApp/blob/master/functionaltest/src/test/java/functionaltest/ftat.java (line 19 and 20)
+Change only the IP addresses
+	Change the Production environment IP address in the below file:
+/WebApp/blob/master/Acceptancetest/src/test/java/acceptancetest/acat.java (line 15 and 16)
+
+ 
+Perform Static Code Analysis
+	Download the script file
+wget https://raw.githubusercontent.com/kdandapani/docker-demo/master/docker-compose.yml
+	Create a directory
+mkdir jenkins
+	Move the script file
+mv docker-compose.yml jenkins
+	Change directory
+cd jenkins 
+	See what is inside the script file
+cat docker-compose.yml
+	Install docker compose
+sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+	Change permission
+chmod +x /usr/local/bin/docker-compose
+	Check the version
+docker-compose - - version
+	Bring up docker compose
+docker-compose up -d
+	Check the docker process
+docker ps
+	You can check the logs of sonarqube
+docker-compose logs –f sonarqube 
+
+Warming up with Docker
+	Using the Docker Command, To view all available subcommands, type:
+docker
+	To view the switches available to a specific command, type:
+Docker docker-subcommand - - help
+	To view system-wide information about Docker, use:
+Docker info
+	
+
